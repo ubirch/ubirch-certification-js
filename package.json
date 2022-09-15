@@ -1,0 +1,72 @@
+{
+  "name": "@ubirch/ubirch-certification-js",
+  "version": "0.1.0",
+  "description": "JavaScript package to certify data in the UBIRCH system to be anchored by UBIRCH in a trustworthy way",
+  "main": "dist/index.js",
+  "files": [
+    "dist/*"
+  ],
+  "scripts": {
+    "start": "npm run serve:local",
+    "test": "jest --coverage=true",
+    "serve:local": "webpack serve --env STAGE=local --config config/webpack.config.ts",
+    "serve": "webpack serve --env STAGE=prod --config config/webpack.config.ts",
+    "build:local": "webpack --env STAGE=local --config config/webpack.config.ts",
+    "build": "webpack --env STAGE=prod --config config/webpack.config.ts",
+    "lint": "eslint -c .eslintrc.js src/**/*.ts",
+    "export": "npm run build && npm publish --access public",
+    "export:beta": "npm run build && npm publish --access public --tag beta"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ubirch/ubirch-certification-js.git"
+  },
+  "keywords": [
+    "ubirch",
+    "certification",
+    "blockchain",
+    "anchoring"
+  ],
+  "author": "Beate Fiss, Ubirch GmbH",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/ubirch/ubirch-certification-js/issues"
+  },
+  "homepage": "https://developer.ubirch.com/ubirch-certification-js/",
+  "devDependencies": {
+    "@types/jest": "^26.0.20",
+    "@types/webpack-dev-server": "^3.11.3",
+    "@typescript-eslint/eslint-plugin": "^4.22.0",
+    "@typescript-eslint/parser": "^4.22.0",
+    "classnames": "^2.3.1",
+    "clean-webpack-plugin": "^3.0.0",
+    "css-loader": "^5.2.4",
+    "eslint": "^7.24.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-prettier": "^3.4.0",
+    "html-webpack-plugin": "^5.3.1",
+    "jest": "^26.6.3",
+    "jest-scss-transform": "^1.0.1",
+    "prettier": "^2.2.1",
+    "sass": "^1.32.12",
+    "sass-loader": "^11.0.1",
+    "style-loader": "^2.0.0",
+    "ts-jest": "^26.5.1",
+    "ts-loader": "^8.0.17",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.1.5",
+    "webpack": "^5.66.0",
+    "webpack-cli": "^4.10.0",
+    "webpack-dev-server": "^4.7.3",
+    "webpack-merge": "^5.7.3"
+  },
+  "dependencies": {
+    "@msgpack/msgpack": "^2.8.0",
+    "@ubirch/ubirch-protocol-verifier": "^0.0.9",
+    "base45": "^2.0.1",
+    "buffer": "^6.0.3",
+    "i18next": "^20.2.1",
+    "rxjs": "^6.6.6",
+    "ts-node-dev": "^2.0.0"
+  }
+}

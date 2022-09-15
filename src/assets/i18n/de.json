@@ -1,0 +1,15 @@
+{
+  "info": {
+    "START_CERTIFICATION_CALL": "Daten werden zum Erstellen eines Zertifikats ans Backend gesendet"
+  },
+  "error": {
+    "CERTIFICATION_UNAVAILABLE": "Zertifiksdienst ist nicht verfügbar! {{message}}",
+    "JSON_PARSE_FAILED": "Das interne JSON Datenformat enthält einen Fehler und konnte nicht gelesen werden",
+    "JSON_MALFORMED": "Das Erzeugen des internen JSON Datenformats aus den Eingabefeldern ist fehlgeschlagen",
+  },
+  "certification-state": {
+    "CERTIFICATION_PENDING": "Erstellung des Zertifikates wird durchgeführt...",
+    "CERTIFICATION_SUCCESSFUL": "Erstellung des Zertifikates erfolgreich!",
+    "CERTIFICATION_FAILED": "Erstellung des Zertifikates ist fehlgeschlagen!"
+  }
+}

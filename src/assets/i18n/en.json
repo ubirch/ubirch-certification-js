@@ -1,0 +1,16 @@
+{
+  "info": {
+    "START_CERTIFICATION_CALL": "Sending data to backend for certification"
+  },
+  "error": {
+    "CERTIFICATION_UNAVAILABLE": "Certification service is not available! {{message}}",
+    "JSON_PARSE_FAILED": "JSON could not be parsed",
+    "JSON_MALFORMED": "Building internal JSON format from input string failed"
+  },
+  "certification-state": {
+    "CERTIFICATION_PENDING": "Certification pending...",
+    "CERTIFICATION_SUCCESSFUL": "Certification successful!",
+    "CERTIFICATION_FAILED": "Certification failed!"
+  }
+}
+
