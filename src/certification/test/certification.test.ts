@@ -53,25 +53,14 @@ describe('UbirchCertification', () => {
     certifier = new UbirchCertificationMock(defaultSettings);
   });
 
-  describe('UbirchCertificationTools', () => {
+  describe('certify', () => {
     describe('packaging msgPack payload', () => {
       test('should create MsgPack from JSON and hash it with sha256 on base64', () => {
         const data = JSON.stringify(exampleJSON['default']);
         console.log(data);
         expect(data).toEqual(jsonPayloadStr);
 
-        const msgPackPayload = UbirchCertificationToolsMock.getMsgPackPayload(jsonPayloadStr);
-        const masPackPayloadInHex = uInt8Array2Hex(msgPackPayload);
-        expect(msgPackPayload).toEqual(expectedMsgPackPayload);
-        console.log(masPackPayloadInHex);
-        expect(msgPackPayload).toBeDefined();
-        expect(masPackPayloadInHex).toBeDefined();
-        expect(masPackPayloadInHex).toEqual(expectedMsgPackPayload);
-
-        const hash = UbirchCertificationToolsMock.getHashedPayload(msgPackPayload);
-        console.log(hash);
-        expect(hash).toBeDefined();
-        expect(hash).toEqual(hashExpected);
+        // TODO: implement
       });
     })
   });

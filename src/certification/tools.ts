@@ -2,6 +2,7 @@ import zlib from 'zlib';
 import { encode, decode }  from '@msgpack/msgpack';
 import { createHash } from 'crypto';
 import * as base45 from 'base45';
+import { Buffer } from 'buffer';
 
 export class UbirchCertificationTools {
   protected static ProtocolVersion = 2;
@@ -12,7 +13,7 @@ export class UbirchCertificationTools {
   private static CHAINED = (UbirchCertificationTools.ProtocolVersion << 4) | 0x03;
   private static CERT_PREFIX = "C01:";
 
-  public static getMsgPackPayload (jsonPayload: string) {
+  public static getMsgPackPayload (jsonPayload: any) {
     return encode(jsonPayload);
   }
 
