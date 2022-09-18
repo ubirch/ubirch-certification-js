@@ -1,20 +1,21 @@
-import UbirchVerification from './verification';
-import UbirchVerificationWidget from './widget';
-import UbirchFormUtils from './form-utils';
+import { UbirchCertification } from './certification/certification';
+import  { UbirchCertificationTools } from './certification/tools';
 import {
-  EUbirchStages, EUbirchHashAlgorithms, EUbirchVerificationStateKeys, EUbirchMessageTypes,
-  IUbirchVerificationResult, IUbirchBlockchainAnchor, IUbirchCertificationState,
-  TUbirchDataParams } from './models/models';
+  EUbirchHashAlgorithms,
+  EUbirchMessageTypes,
+  EUbirchStages,
+  IUbirchCertificationState,
+  EUbirchCertificationStateKeys,
+  IUbirchCertificationResult
+} from './models/models';
+
 export {
-  UbirchVerification,
-  UbirchVerificationWidget,
-  UbirchFormUtils,
+  UbirchCertification,
+  UbirchCertificationTools,
   EUbirchStages,
   EUbirchHashAlgorithms,
-  EUbirchVerificationStateKeys,
+  EUbirchCertificationStateKeys,
   EUbirchMessageTypes,
   IUbirchCertificationState,
-  IUbirchVerificationResult,
-  IUbirchBlockchainAnchor,
-  TUbirchDataParams,
+  IUbirchCertificationResult
 };
