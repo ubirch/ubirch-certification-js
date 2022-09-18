@@ -1,11 +1,13 @@
 import {
+  EUbirchCertificationStateKeys,
   EUbirchStages,
-  IUbirchCertificationConfig,
+  IUbirchCertificationConfig, IUbirchSignedCertificationResponse, IUbirchCertificationResult,
   UbirchMessage,
 } from '../../models/models';
 import { UbirchCertification } from '../certification';
 import { UbirchCertificationTools } from '../tools';
 import * as exampleJSON from './example.json';
+import * as testResp from './testresp.json';
 
 global.fetch = jest.fn();
 
@@ -43,6 +45,7 @@ const hashExpected = "WFOCrSiXH+1MYYp2sL918SDsL4XLVePLCHFm11hrJqc=";
 let certifier: UbirchCertificationMock;
 
 const defaultSettings: IUbirchCertificationConfig = {
+  deviceId: '776d1279-bb02-55e7-9da1-e2d01a14a758',
   stage: EUbirchStages.dev,
 };
 
@@ -57,12 +60,26 @@ describe('UbirchCertification', () => {
     describe('packaging msgPack payload', () => {
       test('should create MsgPack from JSON and hash it with sha256 on base64', () => {
         const data = JSON.stringify(exampleJSON['default']);
-        console.log(data);
-        expect(data).toEqual(jsonPayloadStr);
+        (global.fetch as jest.Mock)
+          .mockResolvedValueOnce({
+            status: 200,
+            json: () => testResp,
+          });
 
-        // TODO: implement
+        return certifier
+          .certifyJson(data)
+          .then((result: IUbirchCertificationResult) => {
+            checkSuccessfulCertification(result);
+          });
       });
     })
+
+    function checkSuccessfulCertification(result: IUbirchCertificationResult) {
+      expect(result).toBeDefined();
+      expect(result.upp).toBeDefined();
+      expect(result.certificationState).toBe(EUbirchCertificationStateKeys.CERTIFICATION_SUCCESSFUL);
+      expect(result.failReason).toBeUndefined();
+    }
   });
 });
 
