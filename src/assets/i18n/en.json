@@ -4,13 +4,38 @@
   },
   "error": {
     "CERTIFICATION_UNAVAILABLE": "Certification service is not available! {{message}}",
+    "CERTIFICATION_CALL_ERROR": "Error occurred during certification: {{message}}",
+    "CERTIFICATION_FAILED_NO_UPP": "Error occurred during certification: no certificate (UPP) has been created",
+    "MISSING_DEVICE_ID": "You need to provide the deviceID to certify data with",
     "JSON_PARSE_FAILED": "JSON could not be parsed",
-    "JSON_MALFORMED": "Building internal JSON format from input string failed"
+    "JSON_MALFORMED": "Building JSON format from input string failed",
+    "ID_CANNOT_BE_FOUND": "Thing with that deviceId cannot be found",
+    "NOT_AUTHORIZED": "You are not authorised to create a certificate",
+    "CRTIFICATE_ALREADY_EXISTS": "This certificate has already been anchored!",
+    "INTERNAL_SERVER_ERROR": "An internal server error occurred",
+    "UNKNOWN_ERROR": "An unexpected error occurred",
+    "NOT_YET_IMPLEMENTED": "This function is not yet implemented",
+    "NA401-1000":	"Authentication Error: Missing header/param - Niomon Auth",
+    "NA401-2000":	"Authentication Error: Error processing authentication response/Failed Request - Niomon Auth",
+    "NA401-3000":	"Authentication Error (Cumulocity): Error processing authentication request - Niomon Auth",
+    "NA401-4000":	"Authentication Error: Failed Request - Niomon Auth",
+    "ND403-1100":	"Invalid Verification: Missing header/param - Niomon Decoder - verification -",
+    "ND403-1200":	"Invalid Verification: Invalid Parts - Niomon Decoder - verification -",
+    "ND403-1300":	"Invalid Verification - Niomon Decoder - verification -",
+    "ND400-2100":	"Decoding Error: Missing header/param - Niomon Decoder - decoding -",
+    "ND403-2200":	"Decoding Error: Invalid Match - Niomon Decoder - decoding -",
+    "ND400-2300":	"Decoding Error: Decoding Error/Null Payload - Niomon Decoder - decoding -",
+    "NE400-1000":	"Enriching Error: Missing header/param/body - Niomon Enricher",
+    "NE400-2000":	"Enriching Error: Error processing enrichment request - Niomon Enricher",
+    "NE404-0000":	"Enriching Error: Not found (Cumulocity) - Niomon Enricher",
+    "NF409-0000":	"Integrity Error: Duplicate Hash - Niomon Filter",
+    "NF409-0010":	"Integrity Error: Disable already disabled or non-existing hash - Niomon Filter",
+    "NF409-0020":	"Integrity Error: Enable already enabled or non-existing hash - Niomon Filter",
+    "NF409-0030":	"Integrity Error: Delete non-existing hash - Niomon Filter"
   },
   "certification-state": {
     "CERTIFICATION_PENDING": "Certification pending...",
     "CERTIFICATION_SUCCESSFUL": "Certification successful!",
-    "CERTIFICATION_FAILED": "Certification failed!"
-  }
+    "CERTIFICATION_FAILED": "Certification failed!",
+    "CERTIFICATION_STATE_UNDEFINED": "Certification state is undefined."}
 }
-

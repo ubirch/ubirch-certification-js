@@ -4,12 +4,39 @@
   },
   "error": {
     "CERTIFICATION_UNAVAILABLE": "Zertifiksdienst ist nicht verfügbar! {{message}}",
+    "CERTIFICATION_CALL_ERROR": "Während der Erstellung des Zertifikats ist ein Fehler aufgetreten: {{message}}",
+    "CERTIFICATION_FAILED_NO_UPP": "Während der Erstellung des Zertifikats ist ein Fehler aufgetreten: es wurde kein Zertifikat (UPP) erstellt",
+    "MISSING_DEVICE_ID": "Fehler beim Erstellen der UbirchCertification Instanz auf der Seite: es wurde keine deviceId des UBIRCH Things übergeben, über das Daten zertifiziert werden sollen.",
     "JSON_PARSE_FAILED": "Das interne JSON Datenformat enthält einen Fehler und konnte nicht gelesen werden",
-    "JSON_MALFORMED": "Das Erzeugen des internen JSON Datenformats aus den Eingabefeldern ist fehlgeschlagen",
+    "JSON_MALFORMED": "Das Erzeugen eines JSON Objektes aus den Eingabefeldern ist fehlgeschlagen",
+    "ID_CANNOT_BE_FOUND": "Ein Thing mit dieser deviceId kann nicht gefunden werden",
+    "NOT_AUTHORIZED": "Sie sind nicht berechtigt, Zertifikate zu erstellen",
+    "CRTIFICATE_ALREADY_EXISTS": "Ein Zertifikat mit diesen Daten wurde bereits erstellt!",
+    "INTERNAL_SERVER_ERROR": "Ein interner Server Fehler ist aufgetreten",
+    "UNKNOWN_ERROR": "Ein unerwarteter Fehler ist aufgetreten",
+    "NOT_YET_IMPLEMENTED": "Diese Funktion ist noch nicht implementiert",
+    "NA401-1000":	"Authentication Error: Missing header/param - Niomon Auth",
+    "NA401-2000":	"Authentication Error: Error processing authentication response/Failed Request - Niomon Auth",
+    "NA401-3000":	"Authentication Error (Cumulocity): Error processing authentication request - Niomon Auth",
+    "NA401-4000":	"Authentication Error: Failed Request - Niomon Auth",
+    "ND403-1100":	"Invalid Verification: Missing header/param - Niomon Decoder - verification -",
+    "ND403-1200":	"Invalid Verification: Invalid Parts - Niomon Decoder - verification -",
+    "ND403-1300":	"Invalid Verification - Niomon Decoder - verification -",
+    "ND400-2100":	"Decoding Error: Missing header/param - Niomon Decoder - decoding -",
+    "ND403-2200":	"Decoding Error: Invalid Match - Niomon Decoder - decoding -",
+    "ND400-2300":	"Decoding Error: Decoding Error/Null Payload - Niomon Decoder - decoding -",
+    "NE400-1000":	"Enriching Error: Missing header/param/body - Niomon Enricher",
+    "NE400-2000":	"Enriching Error: Error processing enrichment request - Niomon Enricher",
+    "NE404-0000":	"Enriching Error: Not found (Cumulocity) - Niomon Enricher",
+    "NF409-0000":	"Integrity Error: Duplicate Hash - Niomon Filter",
+    "NF409-0010":	"Integrity Error: Disable already disabled or non-existing hash - Niomon Filter",
+    "NF409-0020":	"Integrity Error: Enable already enabled or non-existing hash - Niomon Filter",
+    "NF409-0030":	"Integrity Error: Delete non-existing hash - Niomon Filter"
   },
   "certification-state": {
     "CERTIFICATION_PENDING": "Erstellung des Zertifikates wird durchgeführt...",
     "CERTIFICATION_SUCCESSFUL": "Erstellung des Zertifikates erfolgreich!",
-    "CERTIFICATION_FAILED": "Erstellung des Zertifikates ist fehlgeschlagen!"
+    "CERTIFICATION_FAILED": "Erstellung des Zertifikates ist fehlgeschlagen!",
+    "CERTIFICATION_STATE_UNDEFINED": "Der Zustand der Zertifizierung ist undefiniert."
   }
 }

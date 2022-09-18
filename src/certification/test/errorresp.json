@@ -1,0 +1,48 @@
+{
+  "version":"1.0",
+  "ok":false,
+  "data":{
+    "status":401,
+    "headers":{
+      "Content-Type":[
+        "application/json"
+      ],
+      "Date":[
+        "Mon, 15 Aug 2022 10:28:58 GMT"
+      ],
+      "Content-Length":[
+        "937"
+      ]
+    },
+    "body":{
+      "hash":"s/Nbzg7zUipL/iK3aigbHXqqSedze8Y/GTNhF/VFjgA=",
+      "upp":"liPEEHdtEnm7AlXnnaHi0BoUp1jEQPPgTylabXgHQ8NvxiqcjjXS5cg0Pru7sqQavfsmTbfUdb19wCoFhPdLsPMHSlIUh3rkPq0APo9T9tSlC/FqvfIAxCCz81vODvNSKkv+IrdqKBsdeqpJ53N7xj8ZM2EX9UWOAMRAEoZIAGmY7MApziiDMjv9G1Z1DXQvycTM4oc/Q0e3i6OuKbkV3Sc9XCY6VajeOUTOmIu/qlB82yieQ+C1oUzP0A==",
+      "publicKey":"iGeW55GpnuP0Fb30n4YdAPuuDQtJZBKz8HGiTpBe6NnniU5By8XalKATt0c6ov5iB9Kppw95bDG0ml6E3vVrDw==",
+      "response":{
+        "statusCode":401,
+        "header":{
+          "Content-Length":[
+            "121"
+          ],
+          "Content-Type":[
+            "application/octet-stream"
+          ],
+          "Date":[
+            "Mon, 15 Aug 2022 10:28:58 GMT"
+          ],
+          "Server":[
+            "ubirch-trust-service/1.0"
+          ],
+          "Strict-Transport-Security":[
+            "max-age=15552000; includeSubDomains; preload"
+          ],
+          "X-Err":[
+            "NA401-2000"
+          ]
+        },
+        "content":"lSLEEJ08eP8i80RBpdGFxjbUhv8AxCBWhAPv6JVD1Lfg/9cm074OAAAAAAAAAAAAAAAAAAAAAMRA1/VDFD27ImkbkiO5hZxMZ6DWLWzgVTGqJfML1jqdujxn2LBwMaHufc2sPbQatp8LkhAvR+Gs93Xrd2Gv+V/NCA=="
+      },
+      "requestID":"568403ef-e895-43d4-b7e0-ffd726d3be0e"
+    }
+  }
+}
