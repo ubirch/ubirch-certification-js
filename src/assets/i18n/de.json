@@ -36,6 +36,7 @@
   "certification-state": {
     "CERTIFICATION_PENDING": "Erstellung des Zertifikates wird durchgeführt...",
     "CERTIFICATION_SUCCESSFUL": "Erstellung des Zertifikates erfolgreich!",
-    "CERTIFICATION_FAILED": "Erstellung des Zertifikates ist fehlgeschlagen!"
+    "CERTIFICATION_FAILED": "Erstellung des Zertifikates ist fehlgeschlagen!",
+    "CERTIFICATION_STATE_UNDEFINED": "Der Zustand der Zertifizierung ist undefiniert."
   }
 }

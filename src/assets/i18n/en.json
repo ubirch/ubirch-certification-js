@@ -36,6 +36,6 @@
   "certification-state": {
     "CERTIFICATION_PENDING": "Certification pending...",
     "CERTIFICATION_SUCCESSFUL": "Certification successful!",
-    "CERTIFICATION_FAILED": "Certification failed!"
-  }
+    "CERTIFICATION_FAILED": "Certification failed!",
+    "CERTIFICATION_STATE_UNDEFINED": "Certification state is undefined."}
 }

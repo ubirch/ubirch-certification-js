@@ -1,4 +1,3 @@
-import i18n from '../utils/translations';
 import { BehaviorSubject, Observable } from 'rxjs';
 import environment from '../environment';
 import {
@@ -21,6 +20,7 @@ import {
   IUbirchUpp,
   UbirchMessage,
 } from '../models/models';
+import i18n from '../utils/translations';
 import { UbirchCertificationTools } from './tools';
 
 export class UbirchCertification {
@@ -46,37 +46,62 @@ export class UbirchCertification {
   }
 
   public async certifyJSONString(jsonStr: string, uppType: EUppTypes = EUppTypes.SIGNED): Promise<IUbirchCertificationResult> {
-    const certificationResult: IUbirchCertificationResult = this.createInitialUbirchCerTificationResult();
     try {
       const data = JSON.parse(jsonStr);
       return this.certifyJson(data, uppType);
     } catch (e) {
-      this.handleError(EError.JSON_MALFORMED, {errorMessage: e.message})
+      const certificationResult: IUbirchCertificationResult = this.createInitialUbirchCertificationResult();
+      certificationResult.certificationState = EUbirchCertificationStateKeys.CERTIFICATION_FAILED;
+      certificationResult.failed = {
+        code: EError.JSON_MALFORMED,
+        message: e.message
+      };
+      this.handleCertificationState(certificationResult);
+      return certificationResult;
     }
   }
 
   public async certifyJson(json: any, uppType: EUppTypes = EUppTypes.SIGNED): Promise<IUbirchCertificationResult> {
-    let certificationResult: IUbirchCertificationResult = this.createInitialUbirchCerTificationResult();
+    let certificationResult: IUbirchCertificationResult = this.createInitialUbirchCertificationResult();
+    this.handleCertificationState(certificationResult);
+
     try {
-      const hash: string = this.createHash(json, uppType);
-      return await this.certifyHash(hash, uppType);
-    } catch (e) {
-      if (e.isTypeOf(EError)) {
-        this.handleError(e.code, e.message);
-      } else {
-        this.handleError(EError.UNKNOWN_ERROR);
+      let hash: string;
+      let originalPayload: Uint8Array;
+
+      switch (uppType) {
+        case EUppTypes.SIGNED:
+          originalPayload = UbirchCertificationTools.getMsgPackPayload(json);
+          hash = UbirchCertificationTools.getHashedPayload(originalPayload);
+          break;
+        case EUppTypes.CHAINED:
+        default:
+          certificationResult.certificationState = EUbirchCertificationStateKeys.CERTIFICATION_FAILED;
+          certificationResult.failed = {
+            code: EError.NOT_YET_IMPLEMENTED
+          };
+          this.handleCertificationState(certificationResult);
+          return certificationResult;
       }
+
+      certificationResult.upp = await this.certifyHash(hash, uppType, originalPayload);
+      certificationResult.certificationState = EUbirchCertificationStateKeys.CERTIFICATION_SUCCESSFUL;
+    } catch (e) {
+      certificationResult.certificationState = EUbirchCertificationStateKeys.CERTIFICATION_FAILED;
+      certificationResult.failed = {
+        code: e.code || EError.UNKNOWN_ERROR,
+        message: e.message
+      };
+      this.handleCertificationState(certificationResult);
     }
     return certificationResult;
   }
 
-  public async certifyHash(hash: string, uppType: EUppTypes = EUppTypes.SIGNED, originalPayload?: Uint8Array): Promise<IUbirchCertificationResult> {
+  public async certifyHash(hash: string, uppType: EUppTypes = EUppTypes.SIGNED, originalPayload?: Uint8Array): Promise<IUbirchUpp> {
     switch (uppType) {
       case EUppTypes.SIGNED:
         const signedUpp: IUbirchSignedCertificationResponse = await this.callSignedCertification(hash);
-        const upp: IUbirchUpp = this.getSignedUpp(signedUpp, originalPayload);
-
-        break;
+        return this.getSignedUpp(signedUpp, originalPayload);
       case EUppTypes.CHAINED:
         this.handleError(EError.NOT_YET_IMPLEMENTED);
         return undefined;
@@ -85,24 +110,6 @@ export class UbirchCertification {
 
   public get messenger(): Observable<UbirchMessage> {
     return this.messenger$;
-  }
-
-  private createHash(json: any, uppType: EUppTypes = EUppTypes.SIGNED): string {
-    let hash: string;
-    switch (uppType) {
-      case EUppTypes.SIGNED:
-        const msgPackPayload: Uint8Array = UbirchCertificationTools.getMsgPackPayload(json);
-        hash = UbirchCertificationTools.getHashedPayload(msgPackPayload);
-        break;
-      case EUppTypes.CHAINED:
-        const sortedJsonStr = this.formatJSON(json);
-        hash = UbirchCertificationTools.getHashedPayload(sortedJsonStr);
-        break;
-      default:
-        hash = UbirchCertificationTools.getHashedPayload(json);
-        break;
-    }
-    return hash;
   }
 
   private async callSignedCertification (hash): Promise<IUbirchSignedCertificationResponse> {
@@ -231,9 +238,9 @@ export class UbirchCertification {
   }
 
   protected handleCertificationState(
-    code: EUbirchCertificationStateKeys,
-    result?: IUbirchCertificationResult
+    result: IUbirchCertificationResult
   ): void {
+    const code = result.certificationState || EUbirchCertificationStateKeys.CERTIFICATION_STATE_UNDEFINED;
     const infoMsg: string = i18n.t(`default:verification-state.${code}`);
 
     const info: IUbirchCertificationState = {
@@ -246,10 +253,9 @@ export class UbirchCertification {
     this.log(info);
   }
 
-  protected createInitialUbirchCerTificationResult(): IUbirchCertificationResult {
+  protected createInitialUbirchCertificationResult(): IUbirchCertificationResult {
       const result: IUbirchCertificationResult = {
         upp: undefined,
-        creationTimestamp: undefined,
         certificationState: EUbirchCertificationStateKeys.CERTIFICATION_PENDING
       };
 

@@ -36,15 +36,17 @@ export interface IUbirchUpp {
 export interface IUbirchCertificationResult {
   certificationState: EUbirchCertificationStateKeys;
   upp: IUbirchUpp;
-  creationTimestamp: string;
-  rawData?: IUbirchSignedCertificationResponse;
-  failReason?: EError;
+  failed?: {
+    code: EError;
+    message?: string;
+  }
 }
 
 export enum EUbirchCertificationStateKeys {
   CERTIFICATION_PENDING = 'CERTIFICATION_PENDING',
   CERTIFICATION_FAILED = 'CERTIFICATION_FAILED',
   CERTIFICATION_SUCCESSFUL = 'CERTIFICATION_SUCCESSFUL',
+  CERTIFICATION_STATE_UNDEFINED = 'CERTIFICATION_STATE_UNDEFINED'
 }
 
 export interface IUbirchSignedCertificationResponse {
