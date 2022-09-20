@@ -1,5 +1,5 @@
-import { UbirchCertification } from './certification/certification';
-import  { UbirchCertificationTools } from './certification/tools';
+import UbirchCertification from './certification';
+import UbirchCertificationTools from './certification-tools';
 import {
   EUbirchHashAlgorithms,
   EUbirchMessageTypes,

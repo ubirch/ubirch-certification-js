@@ -38,6 +38,7 @@ export interface IUbirchCertificationResult {
   upp: IUbirchUpp;
   failed?: {
     code: EError;
+    errorBECodes?: string[];
     message?: string;
   }
 }
@@ -88,6 +89,7 @@ export interface IUbirchError {
   type: EUbirchMessageTypes.ERROR;
   message: string;
   code: EError;
+  errorBECodes?: string[];
   errorDetails?: IUbirchErrorDetails;
 }
 
@@ -124,7 +126,8 @@ export enum EError {
   NOT_AUTHORIZED = 'NOT_AUTHORIZED',
   CRTIFICATE_ALREADY_EXISTS = 'CRTIFICATE_ALREADY_EXISTS',
   INTERNAL_SERVER_ERROR = 'INTERNAL_SERVER_ERROR',
-  UNKNOWN_ERROR = 'UNKNOWN_ERRORD',
+  BAD_REQUEST = 'BAD_REQUEST',
+  UNKNOWN_ERROR = 'UNKNOWN_ERROR',
   NOT_YET_IMPLEMENTED = 'NOT_YET_IMPLEMENTED',
   NA401_1000 = 'NA401-1000',
   NA401_2000 = 'NA401-2000',

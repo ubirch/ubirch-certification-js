@@ -2,12 +2,6 @@
 
 JavaScript package to certify data in the UBIRCH system to be anchored by UBIRCH in a trustworthy way.
 
-The UbirchCertification package consists of these parts:
-
-* **UbirchCertification** - contains the core functionality of certifying data against the UBIRCH system
-
-[ubirch-certification-js Repository on GitHub](https://github.com/ubirch/ubirch-certification-js)
-
 ## Usage
 
 **NPM Package**:  [@ubirch/ubirch-certification-js NPM package](https://www.npmjs.com/package/@ubirch/ubirch-certification-js)
@@ -26,6 +20,9 @@ Install package from npm
 
 **Github Repository**: [https://github.com/ubirch/ubirch-certification-js](https://github.com/ubirch/ubirch-certification-js)
 
+**Reference Implementation**: [ubirch-certificate-js-reference](https://github.com/ubirch/ubirch-certificate-js-reference)
+
+
 ## Building from sources.
 
 `npm install`
@@ -33,16 +30,6 @@ Install package from npm
 `npm run test`
 
 `npm run build` This will bundle a js file for the browser in the `./dist` folder.
-
-## Test on localhost
-
-`npm install`
-
-`npm start`
-
-Open simple test page here:
-
-`http://localhost:9105`
 
 ## Copyright
 

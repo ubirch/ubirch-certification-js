@@ -14,6 +14,7 @@
     "CRTIFICATE_ALREADY_EXISTS": "This certificate has already been anchored!",
     "INTERNAL_SERVER_ERROR": "An internal server error occurred",
     "UNKNOWN_ERROR": "An unexpected error occurred",
+    "BAD_REQUEST": "Bad request - request cannot be handled",
     "NOT_YET_IMPLEMENTED": "This function is not yet implemented",
     "NA401-1000":	"Authentication Error: Missing header/param - Niomon Auth",
     "NA401-2000":	"Authentication Error: Error processing authentication response/Failed Request - Niomon Auth",
