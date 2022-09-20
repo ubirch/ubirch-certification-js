@@ -1,6 +1,5 @@
 const path = require('path');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: {
@@ -23,11 +22,6 @@ module.exports = {
     },
   },
   plugins: [
-    new HtmlWebpackPlugin({
-      filename: 'index.html',
-      template: path.resolve(__dirname, '../demo/index.html'),
-      minify: false,
-    }),
     new CleanWebpackPlugin({ cleanStaleWebpackAssets: false }),
   ],
   module: {
@@ -49,11 +43,6 @@ module.exports = {
         ],
       },
     ],
-  },
-  devServer: {
-    static: path.join(__dirname, '../dist'),
-    compress: true,
-    port: 9102,
   },
 };
 

@@ -21,7 +21,7 @@ import {
   UbirchMessage,
 } from '../models/models';
 import i18n from '../utils/translations';
-import { UbirchCertificationTools } from './tools';
+import { UbirchCertificationTools } from '../certification-tools/tools';
 
 export class UbirchCertification {
   protected stage: EUbirchStages = EUbirchStages.prod;
@@ -43,22 +43,6 @@ export class UbirchCertification {
     this.type = config.uppType || this.type;
     this.algorithm = config.algorithm || this.algorithm;
     this.language = config.language || this.language;
-  }
-
-  public async certifyJSONString(jsonStr: string, uppType: EUppTypes = EUppTypes.SIGNED): Promise<IUbirchCertificationResult> {
-    try {
-      const data = JSON.parse(jsonStr);
-      return this.certifyJson(data, uppType);
-    } catch (e) {
-      const certificationResult: IUbirchCertificationResult = this.createInitialUbirchCertificationResult();
-      certificationResult.certificationState = EUbirchCertificationStateKeys.CERTIFICATION_FAILED;
-      certificationResult.failed = {
-        code: EError.JSON_MALFORMED,
-        message: e.message
-      };
-      this.handleCertificationState(certificationResult);
-      return certificationResult;
-    }
   }
 
   public async certifyJson(json: any, uppType: EUppTypes = EUppTypes.SIGNED): Promise<IUbirchCertificationResult> {
@@ -90,21 +74,21 @@ export class UbirchCertification {
       certificationResult.certificationState = EUbirchCertificationStateKeys.CERTIFICATION_FAILED;
       certificationResult.failed = {
         code: e.code || EError.UNKNOWN_ERROR,
-        message: e.message
+        message: e.message,
+        errorBECodes: e.errorBECodes
       };
       this.handleCertificationState(certificationResult);
     }
     return certificationResult;
   }
 
-  public async certifyHash(hash: string, uppType: EUppTypes = EUppTypes.SIGNED, originalPayload?: Uint8Array): Promise<IUbirchUpp> {
+  protected async certifyHash(hash: string, uppType: EUppTypes = EUppTypes.SIGNED, originalPayload?: Uint8Array): Promise<IUbirchUpp> {
     switch (uppType) {
       case EUppTypes.SIGNED:
         const signedUpp: IUbirchSignedCertificationResponse = await this.callSignedCertification(hash);
         return this.getSignedUpp(signedUpp, originalPayload);
       case EUppTypes.CHAINED:
         this.handleError(EError.NOT_YET_IMPLEMENTED);
-        return undefined;
     }
   }
 
@@ -128,54 +112,51 @@ export class UbirchCertification {
 
     return fetch(verificationUrl, options)
       .catch((err) => err.message as string)
-      .then((response) => {
+      .then(async (response) => {
         if (typeof response === 'string') {
           return self.handleError(EError.CERTIFICATION_UNAVAILABLE, { errorMessage: response });
         }
 
+        if (response.status === 200) {
+          return response.json();
+        }
+        const errResp = await response?.json();
+        const errCodes: string[] = this.extractErrorCode(errResp);
+
         switch (response.status) {
-          case 200: {
-            return response.json();
+          case 409: {
+            self.handleError(EError.CRTIFICATE_ALREADY_EXISTS, undefined, errCodes);
+          }
+          case 401:
+          case 403:
+          case 405: {
+            self.handleError(EError.NOT_AUTHORIZED, undefined, errCodes);
+          }
+          case 400: {
+            self.handleError(EError.BAD_REQUEST, undefined, errCodes);
           }
           case 404: {
-            self.handleError(EError.ID_CANNOT_BE_FOUND);
-          }
-          case 401: {
-            self.handleError(EError.NOT_AUTHORIZED);
-          }
-          case 403: {
-            self.handleError(EError.NOT_AUTHORIZED);
-          }
-          case 405: {
-            self.handleError(EError.NOT_AUTHORIZED);
-          }
-          case 409: {
-            self.handleError(EError.CRTIFICATE_ALREADY_EXISTS);
+            self.handleError(EError.ID_CANNOT_BE_FOUND, undefined, errCodes);
           }
           case 500: {
-            self.handleError(EError.INTERNAL_SERVER_ERROR);
+            self.handleError(EError.INTERNAL_SERVER_ERROR, undefined, errCodes);
           }
           default: {
-            self.handleError(EError.UNKNOWN_ERROR);
+            self.handleError(EError.UNKNOWN_ERROR, undefined, errCodes);
           }
         }
       });
   }
 
   protected getSignedUpp(resultObj: IUbirchSignedCertificationResponse, msgPackPayload: Uint8Array): IUbirchUpp {
-    try {
-      const upp: Buffer = UbirchCertificationTools.extractSignedUpp(resultObj);
-      const uppWithMsgPackPayload: Uint8Array = UbirchCertificationTools.replaceHashByMsgPackInUpp(upp, msgPackPayload);
-      const signedUpp: string = UbirchCertificationTools.packSignedUpp(uppWithMsgPackPayload);
-      return {
-        upp: signedUpp,
-        state: EUppStates.created,
-        type: EUppTypes.SIGNED
-      } as IUbirchUpp;
-    } catch (e) {
-
-    }
-    return undefined;
+    const upp: Buffer = UbirchCertificationTools.extractSignedUpp(resultObj);
+    const uppWithMsgPackPayload: Uint8Array = UbirchCertificationTools.replaceHashByMsgPackInUpp(upp, msgPackPayload);
+    const signedUpp: string = UbirchCertificationTools.packSignedUpp(uppWithMsgPackPayload);
+    return {
+      upp: signedUpp,
+      state: EUppStates.created,
+      type: EUppTypes.SIGNED
+    } as IUbirchUpp;
   }
 
   private formatJSON(json: string, sort = true): string {
@@ -208,21 +189,34 @@ export class UbirchCertification {
     this.messageSubject$.next(logInfo);
   }
 
-  protected handleError(code: EError, errorDetails?: IUbirchErrorDetails): void {
-    const errorMsg: string =
-      code === (EError.CERTIFICATION_UNAVAILABLE || EError.CERTIFICATION_CALL_ERROR) && errorDetails
+  protected handleError(code: EError, errorDetails?: IUbirchErrorDetails, errorCodeFromBE?: string[]): void {
+    let errorMsg: string = '';
+    if (errorCodeFromBE) {
+      errorCodeFromBE.forEach(code => {
+        const msg = this.verifiedLangStr(`default:error.${code}`);
+        errorMsg += errorMsg.length > 0 ? '\n' + msg : msg;
+    })
+    } else {
+      errorMsg = code === (EError.CERTIFICATION_UNAVAILABLE || EError.CERTIFICATION_CALL_ERROR) && errorDetails
         ? i18n.t(`default:error.${code}`, { message: errorDetails.errorMessage })
         : i18n.t(`default:error.${code}`);
+    }
 
     const err: IUbirchError = {
       type: EUbirchMessageTypes.ERROR,
-      message: errorMsg,
+      message: errorMsg.length > 0 ? errorMsg : undefined,
       code,
+      errorBECodes: errorCodeFromBE,
       errorDetails,
     };
 
     this.log(err);
     throw err;
+  }
+
+  protected verifiedLangStr(key: string): string {
+    const val = i18n.t(key);
+    return val === key || 'default:' + val === key ? '' : val;
   }
 
   protected handleInfo(code: EInfo): void {
@@ -261,6 +255,12 @@ export class UbirchCertification {
 
       return result;
     }
+
+  private extractErrorCode(response: any | undefined): string[] {
+    const headers = response?.data?.body?.response?.header;
+    const errorCodes = headers && headers['X-Err'] ? headers['X-Err'] : [];
+    return errorCodes;
+  }
 }
 
 window['UbirchCertification'] = UbirchCertification;

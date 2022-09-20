@@ -1,3 +1,4 @@
+import { UbirchCertification } from '../certification/certification';
 import i18n from '../utils/translations';
 import { decode, encode } from '@msgpack/msgpack';
 import * as base45 from 'base45';
@@ -73,3 +74,5 @@ export class UbirchCertificationTools {
     return Buffer.from(resultObj.data.body.upp, 'base64');
   }
 }
+
+window['UbirchCertificationTools'] = UbirchCertificationTools;

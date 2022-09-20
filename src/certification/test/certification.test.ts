@@ -6,11 +6,13 @@ import {
   UbirchMessage,
 } from '../../models/models';
 import { UbirchCertification } from '../certification';
-import * as exampleJson from './example.json';
-import * as testResp from './testresp.json';
-import * as errorResp from './errorresp.json';
+import * as exampleJson from '../../testdata/example.json';
+import * as testResp from '../../testdata/testresp.json';
+import * as errorResp from '../../testdata/errorresp.json';
 
 global.fetch = jest.fn();
+
+const deepCopy = <T>(obj: T) => JSON.parse(JSON.stringify(obj)) as T;
 
 class UbirchCertificationMock extends UbirchCertification {
   constructor(config: IUbirchCertificationConfig) {
@@ -60,7 +62,7 @@ describe('UbirchCertification', () => {
           });
       });
 
-      test('should handle error occurred during creation of signed upp', () => {
+      test('should handle BE error occurred during creation of signed upp', () => {
         (global.fetch as jest.Mock)
           .mockResolvedValueOnce({
             status: 401,
@@ -75,7 +77,62 @@ describe('UbirchCertification', () => {
             expect(result.failed).toBeDefined();
             expect(result.failed.code).toBeDefined();
             expect(result.failed.code).toEqual(EError.NOT_AUTHORIZED);
+            expect(result.failed.errorBECodes).toBeDefined();
+            expect(result.failed.errorBECodes.length).toBe(1);
+            expect(result.failed.message).toBeDefined();
+            expect(result.failed.message).toEqual("Authentication Error: Error processing authentication response/Failed Request - Niomon Auth");
           });
       });
-    })
+
+      test('should handle multiple BE error occurred during creation of signed upp', () => {
+        const errorRespDataWithSeveralBECodes = deepCopy(errorRespData);
+        errorRespDataWithSeveralBECodes.data.body.response.header['X-Err'].push('NF409-0030');
+        const expectedError = "Authentication Error: Error processing authentication response/Failed Request - Niomon Auth" + "\n" + "Integrity Error: Delete non-existing hash - Niomon Filter";
+
+        (global.fetch as jest.Mock)
+          .mockResolvedValueOnce({
+            status: 401,
+            json: () => errorRespDataWithSeveralBECodes,
+          });
+
+        return certifier
+          .certifyJson(exampleJsonData)
+          .then((result: IUbirchCertificationResult) => {
+            expect(result).toBeDefined();
+            expect(result.certificationState).toBe(EUbirchCertificationStateKeys.CERTIFICATION_FAILED);
+            expect(result.failed).toBeDefined();
+            expect(result.failed.code).toBeDefined();
+            expect(result.failed.code).toEqual(EError.NOT_AUTHORIZED);
+            expect(result.failed.errorBECodes).toBeDefined();
+            expect(result.failed.errorBECodes.length).toBe(2);
+            expect(result.failed.message).toBeDefined();
+            expect(result.failed.message).toEqual(expectedError);
+          });
+      });
+
+
+    test('should not replace unknown BE errors in message', () => {
+      const errorRespDataWithSeveralBECodes = deepCopy(errorRespData);
+      errorRespDataWithSeveralBECodes.data.body.response.header['X-Err'] = ['unknown-code'];
+
+      (global.fetch as jest.Mock)
+        .mockResolvedValueOnce({
+          status: 401,
+          json: () => errorRespDataWithSeveralBECodes,
+        });
+
+      return certifier
+        .certifyJson(exampleJsonData)
+        .then((result: IUbirchCertificationResult) => {
+          expect(result).toBeDefined();
+          expect(result.certificationState).toBe(EUbirchCertificationStateKeys.CERTIFICATION_FAILED);
+          expect(result.failed).toBeDefined();
+          expect(result.failed.code).toBeDefined();
+          expect(result.failed.code).toEqual(EError.NOT_AUTHORIZED);
+          expect(result.failed.errorBECodes).toBeDefined();
+          expect(result.failed.errorBECodes.length).toBe(1);
+          expect(result.failed.message).toBeUndefined();
+        });
+    });
+  })
 });
