@@ -159,7 +159,7 @@ export class UbirchCertification {
     } as IUbirchUpp;
   }
 
-  private formatJSON(json: string, sort = true): string {
+  protected formatJSON(json: string, sort = true): string {
     try {
       const object: { [key: string]: any } = JSON.parse(json);
       return JSON.stringify(sort ? this.sortObjectRecursive(object) : object);
@@ -219,17 +219,17 @@ export class UbirchCertification {
     return val === key || 'default:' + val === key ? '' : val;
   }
 
-  protected handleInfo(code: EInfo): void {
-    const infoMsg: string = i18n.t(`default:info.${code}`);
-
-    const info: IUbirchInfo = {
-      type: EUbirchMessageTypes.INFO,
-      message: infoMsg,
-      code,
-    };
-
-    this.log(info);
-  }
+  // protected handleInfo(code: EInfo): void {
+  //   const infoMsg: string = i18n.t(`default:info.${code}`);
+  //
+  //   const info: IUbirchInfo = {
+  //     type: EUbirchMessageTypes.INFO,
+  //     message: infoMsg,
+  //     code,
+  //   };
+  //
+  //   this.log(info);
+  // }
 
   protected handleCertificationState(
     result: IUbirchCertificationResult

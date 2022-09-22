@@ -1,6 +1,6 @@
 {
   "name": "@ubirch/ubirch-certification-js",
-  "version": "0.2.0",
+  "version": "0.3.1",
   "description": "JavaScript package to certify data in the UBIRCH system to be anchored by UBIRCH in a trustworthy way",
   "main": "dist/index.js",
   "files": [
@@ -61,10 +61,9 @@
     "webpack-merge": "^5.7.3"
   },
   "dependencies": {
-    "@msgpack/msgpack": "^2.8.0",
-    "@ubirch/ubirch-protocol-verifier": "^0.0.9",
+    "@types/express-serve-static-core": "^4.17.30",
+    "@ubirch/ubirch-protocol-verifier": "^0.1.2",
     "assert": "^2.0.0",
-    "base45": "^2.0.1",
     "browserify-zlib": "^0.2.0",
     "buffer": "^6.0.3",
     "i18next": "^20.2.1",
