@@ -1,9 +1,8 @@
-import { decode } from '@msgpack/msgpack';
-import { UbirchCertificationTools } from '../../certification-tools/tools';
 import { Buffer } from 'buffer';
+import * as errorResp from '../../testdata/errorresp.json';
 import * as exampleJson from '../../testdata/example.json';
 import * as testResp from '../../testdata/testresp.json';
-import * as errorResp from '../../testdata/errorresp.json';
+import { UbirchCertificationTools } from '../tools';
 
 global.fetch = jest.fn();
 
@@ -85,13 +84,6 @@ describe('UbirchCertificationTools', () => {
       const upp: Buffer = UbirchCertificationTools.extractSignedUpp(testRespData);
       console.log(upp.toString('hex'));
       expect(upp.toString('hex')).toEqual(uppWithHash);
-    });
-
-    test('CERT_TYPE should be replaced by 0xEE', () => {
-      const CERT_TYPE = 0xEE;
-      console.log(`CERT_TYPE: ${CERT_TYPE}`);
-      console.log(`UbirchCertificationTools.UPP_TYPE.SIGNED: ${UbirchCertificationTools.UPP_TYPE.SIGNED}`);
-      expect(UbirchCertificationTools.UPP_TYPE.SIGNED).toEqual(CERT_TYPE);
     });
 
     test('should replace hash by original msgPack in upp from successful response to same result as python lib', () => {

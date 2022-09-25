@@ -6,6 +6,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0] - 2022-09-22 (beta)
+
+### Added
+
+### Changed
+* all core functionality (msgpack en/decoding, zlib, base45, ...) was extracted to ubirch-protocol-js package
+* functionality of ubirch-certification-js is still the same
+
+### Removed
+
 ## [0.2.0] - 2022-09-20 (beta)
 
 ### Added
