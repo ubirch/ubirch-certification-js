@@ -1,3 +1,6 @@
+import webpack = require('webpack');
+import HtmlWebpackPlugin = require('html-webpack-plugin');
+
 const path = require('path');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
@@ -14,14 +17,22 @@ module.exports = {
     extensions: ['.js', '.ts'],
     fallback: {
       crypto: require.resolve('crypto-browserify'),
-      buffer: require.resolve('buffer/'),
       stream: require.resolve('stream-browserify'),
+      buffer: require.resolve('buffer/'),
       zlib: require.resolve('browserify-zlib'),
       assert: require.resolve("assert/"),
       util: require.resolve("util/")
     },
   },
   plugins: [
+    new webpack.ProvidePlugin({
+      process: 'process',
+    }),
+    new HtmlWebpackPlugin({
+      filename: 'index.html',
+      template: path.resolve(__dirname, '../demo/simple-cert.html'),
+      minify: false,
+    }),
     new CleanWebpackPlugin({ cleanStaleWebpackAssets: false }),
   ],
   module: {
@@ -43,6 +54,11 @@ module.exports = {
         ],
       },
     ],
+  },
+  devServer: {
+    static: path.join(__dirname, '../dist'),
+    compress: true,
+    port: 9105,
   },
 };
 

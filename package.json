@@ -1,6 +1,6 @@
 {
   "name": "@ubirch/ubirch-certification-js",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "JavaScript package to certify data in the UBIRCH system to be anchored by UBIRCH in a trustworthy way",
   "main": "dist/index.js",
   "files": [
@@ -67,6 +67,7 @@
     "browserify-zlib": "^0.2.0",
     "buffer": "^6.0.3",
     "i18next": "^20.2.1",
+    "process": "^0.11.10",
     "rxjs": "^6.6.6",
     "ts-node-dev": "^2.0.0",
     "util": "^0.12.4"
