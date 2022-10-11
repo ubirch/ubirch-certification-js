@@ -4,6 +4,6 @@ export default {
     local: 'https://api.certify.dev.ubirch.com/api/v1/x509/anchor',
     dev: 'https://api.certify.dev.ubirch.com/api/v1/x509/anchor',
     demo: 'https://api.certify.demo.ubirch.com/api/v1/x509/anchor',
-    prod: 'https://api.certify.prod.ubirch.com/api/v1/x509/anchor',
+    prod: 'https://api.certify.ubirch.com/api/v1/x509/anchor',
   }
 } as IUbirchCertificationEnvConfig;

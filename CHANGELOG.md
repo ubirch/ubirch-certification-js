@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.3] - 2022-10-06 (beta)
+
+### Changed
+* fixed url to X509 certify endpoint on prod
+
 ## [0.3.0] - 2022-09-22 (beta)
 
 ### Added

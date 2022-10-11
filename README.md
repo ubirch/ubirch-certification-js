@@ -20,7 +20,11 @@ Install package from npm
 
 **Github Repository**: [https://github.com/ubirch/ubirch-certification-js](https://github.com/ubirch/ubirch-certification-js)
 
-**Reference Implementation**: [ubirch-certificate-js-reference](https://github.com/ubirch/ubirch-certificate-js-reference)
+**Reference Implementation**: `ubirch-certificate-js-reference`
+
+[ubirch-certificate-js-reference on GitHub](https://github.com/ubirch/ubirch-certificate-js-reference)
+
+[ubirch-certificate-js-reference Documentation](https://developer.ubirch.com/ubirch-certificate-js-reference)
 
 
 ## Building from sources.
